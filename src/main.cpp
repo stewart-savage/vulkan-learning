@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 
     while (Input::Event::trigger() != SDL_EVENT_QUIT)
     {
-        renderer.RenderRectangle(Colors::GREEN, Transparency::OPAQUE);
+        renderer.renderRectangle(Colors::GREEN, Transparency::OPAQUE);
     }
 
     SDL_Quit();

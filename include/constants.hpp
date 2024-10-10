@@ -10,7 +10,6 @@ namespace Constants
     const std::string Title("Title");
     constexpr int WINDOW_MIN_WIDTH = 800;
     constexpr int WINDOW_MIN_HEIGHT = 600;
-    constexpr int RENDERER_FLAG = 0; // See SDL_RendererFlags for available options
 } // namespace Constants
 
 namespace Colors

@@ -14,5 +14,5 @@ public:
     {}
     std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_sdl;
 
-    void RenderRectangle(Color color, int transparency) const;
+    void renderRectangle(Color color, int transparency) const;
 };
