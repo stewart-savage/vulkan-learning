@@ -14,14 +14,14 @@ class Window
     int _m_ypos;
     int _m_width;
     int _m_height;
-    uint32_t _m_sdlWindowFlags;
+    uint64_t _m_sdlWindowFlags;
 
 
     void EnforceDimensions();
 
 public:
     Window(std::string title, const int xpos, const int ypos, const int width, const int height,
-           const uint32_t sdlWindowFlags) :
+           const uint64_t sdlWindowFlags) :
         _m_title(std::move(title)), _m_xpos(xpos), _m_ypos(ypos), _m_width(width), _m_height(height),
         _m_sdlWindowFlags(sdlWindowFlags),
         m_sdl(SDL_CreateWindow(_m_title.c_str(), width, height, sdlWindowFlags), SDL_DestroyWindow)

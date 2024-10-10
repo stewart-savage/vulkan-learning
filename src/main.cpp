@@ -6,16 +6,22 @@
 #include "input.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
+#include "vulkan/vulkan_core.h"
 
-int main(int argc, char* argv[])
+int main(int, char*[])
 {
     if (!SDL_Init(SDL_INIT_VIDEO))
     {
         return Error::InitializingSdl;
     }
 
-    const Window window{Constants::Title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080,
-                        SDL_WINDOW_VULKAN};
+    constexpr uint64_t SDL_WINDOW_FLAGS = SDL_WINDOW_VULKAN; // for now only flag we want is Vulkan rendering
+    const Window window{Constants::WINDOW_TITLE.data(),
+                        SDL_WINDOWPOS_CENTERED,
+                        SDL_WINDOWPOS_CENTERED,
+                        1280,
+                        720,
+                        SDL_WINDOW_FLAGS};
     if (!window.m_sdl)
     {
         return Error::CreatingSdlWindow;
