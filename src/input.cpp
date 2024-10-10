@@ -3,8 +3,7 @@
 //
 
 #include "input.hpp"
-#include <SDL.h>
-#include <SDL_events.h>
+#include <SDL3/SDL.h>
 
 Uint32 Input::Event::trigger()
 {
@@ -13,11 +12,11 @@ Uint32 Input::Event::trigger()
 
     switch (evt.type)
     {
-        case SDL_QUIT:
-            return SDL_QUIT;
-        case SDL_KEYDOWN:
+        case SDL_EVENT_QUIT:
+            return SDL_EVENT_QUIT;
+        case SDL_EVENT_KEY_DOWN:
             return Keyboard::press(evt);
-        case SDL_MOUSEBUTTONDOWN:
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
             return Mouse::click(evt);
         default:
             break;
@@ -27,10 +26,10 @@ Uint32 Input::Event::trigger()
 
 Uint32 Input::Keyboard::press(const SDL_Event& evt)
 {
-    switch (evt.key.keysym.sym)
+    switch (evt.key.key)
     {
         case SDLK_ESCAPE:
-            return SDL_QUIT;
+            return SDL_EVENT_QUIT;
         default:
             break;
     }

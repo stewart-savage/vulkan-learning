@@ -1,6 +1,7 @@
 //
 // Created by stewa on 08/06/2024.
 //
+#include "constants.hpp"
 #include "window.hpp"
 
 void Window::EnforceDimensions()

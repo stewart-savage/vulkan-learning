@@ -9,4 +9,3 @@ struct Color
     int g;
     int b;
 };
-

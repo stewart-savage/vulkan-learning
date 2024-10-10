@@ -3,7 +3,7 @@ project(sdl_practice)
 set(CMAKE_CXX_STANDARD 26)
 
 #(on Windows, ensure CMAKE_PREFIX_PATH is added to path containing a directory with SDL2 lib/inc files)
-find_package(SDL2 CONFIG REQUIRED SDL2)
+find_package(SDL3 REQUIRED)
 
 set(SRC main.cpp
         input.cpp
@@ -18,4 +18,13 @@ set(INCLUDE ${PROJECT_SOURCE_DIR}/include)
 #Generate executable, include headers and link libs
 add_executable(sdl_practice ${SRC})
 target_include_directories(sdl_practice PRIVATE ${INCLUDE})
-target_link_libraries(sdl_practice SDL2::SDL2 SDL2::SDL2main)
+target_link_libraries(sdl_practice PRIVATE SDL3::SDL3)
+
+#Copy SDL3.dll from CMAKE_PREFIX_PATH environment variable directory to the post-build directory
+if (WIN32)
+    add_custom_command(
+            TARGET sdl_practice POST_BUILD
+            COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:SDL3::SDL3>" "$<TARGET_FILE_DIR:sdl_practice>"
+            VERBATIM
+    )
+endif ()

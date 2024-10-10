@@ -1,13 +1,13 @@
----
 Language: Cpp
-BasedOnStyle: LLVM
+BasedOnStyle: Microsoft
 AccessModifierOffset: -4
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
 AlignOperands: true
 AlignTrailingComments: false
+AllowShortBlocksOnASingleLine: false
 AlwaysBreakTemplateDeclarations: Yes
-BraceWrapping: 
+BraceWrapping:
   AfterCaseLabel: true
   AfterClass: true
   AfterControlStatement: true
@@ -17,20 +17,20 @@ BraceWrapping:
   AfterStruct: true
   AfterUnion: true
   AfterExternBlock: true
-  BeforeCatch: true
-  BeforeElse: true
+  BeforeCatch: false
+  BeforeElse: false
   BeforeLambdaBody: true
-  BeforeWhile: true
-  SplitEmptyFunction: true
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
-BreakBeforeBraces: Stroustrup
+  BeforeWhile: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
 BreakConstructorInitializers: AfterColon
 BreakConstructorInitializersBeforeComma: false
 ColumnLimit: 120
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ContinuationIndentWidth: 8
-IncludeCategories: 
+IncludeCategories:
   - Regex: '^<.*'
     Priority: 1
   - Regex: '^".*'
@@ -39,7 +39,6 @@ IncludeCategories:
     Priority: 3
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IndentCaseLabels: true
-IndentWidth: 4
 InsertNewlineAtEOF: true
 MacroBlockBegin: ''
 MacroBlockEnd: ''
@@ -53,5 +52,5 @@ SpacesInAngles: false
 SpacesInConditionalStatement: false
 SpacesInCStyleCastParentheses: false
 SpacesInParentheses: false
-TabWidth: 4
-...
+PointerAlignment: Left
+ReferenceAlignment: Left

@@ -2,8 +2,7 @@
 // Created by stewa on 15/06/2024.
 //
 #pragma once
-#include <SDL_events.h>
-#include <SDL_stdinc.h>
+#include <SDL3/SDL.h>
 
 namespace Input
 {
@@ -24,4 +23,4 @@ namespace Input
     public:
         static Uint32 trigger();
     };
-}
+} // namespace Input

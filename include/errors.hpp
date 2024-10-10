@@ -8,4 +8,4 @@ namespace Error
     constexpr int InitializingSdl = 1;
     constexpr int CreatingSdlWindow = 2;
     constexpr int CreatingSdlRenderer = 3;
-}
+} // namespace Error
