@@ -1,16 +1,20 @@
 //
 // Created by stewa on 08/06/2024.
 //
-#include "constants.hpp"
 #include "window.hpp"
 
-void Window::EnforceDimensions()
+bool Window::resize(const int width, const int height)
 {
-    // Ensure minimum window size and 16:9 ratio, otherwise use default
-    if (_m_width < Constants::WINDOW_MIN_WIDTH || _m_height < Constants::WINDOW_MIN_HEIGHT || (16 * _m_height != 9 * _m_width))
+    const bool isValidResizeResolution =
+            _width >= WINDOW_DEFAULT_WIDTH &&
+            _height >= WINDOW_DEFAULT_HEIGHT &&
+            16 * _height == 9 * _width;
+
+    if (isValidResizeResolution && SDL_SetWindowSize(m_sdl.get(), width, height))
     {
-        _m_width = Constants::WINDOW_MIN_WIDTH;
-        _m_height = Constants::WINDOW_MIN_HEIGHT;
-        SDL_SetWindowSize(m_sdl.get(), _m_width, _m_height);
+        _width = width;
+        _height = height;
+        return true;
     }
+    return false;
 }

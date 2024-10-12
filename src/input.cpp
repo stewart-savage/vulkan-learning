@@ -1,7 +1,6 @@
 //
 // Created by stewa on 15/06/2024.
 //
-
 #include "input.hpp"
 #include <SDL3/SDL.h>
 
@@ -38,7 +37,7 @@ Uint32 Input::Keyboard::press(const SDL_Event& evt)
 
 Uint32 Input::Mouse::click(const SDL_Event& evt)
 {
-    switch (evt.button.button) // a button button? SDL enum names are truly marvelous
+    switch (evt.button.button)
     {
         case SDL_BUTTON_LEFT:
             break;

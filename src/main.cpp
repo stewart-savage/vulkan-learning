@@ -5,8 +5,8 @@
 #include "errors.hpp"
 #include "input.hpp"
 #include "renderer.hpp"
-#include "window.hpp"
 #include "vulkan/vulkan_core.h"
+#include "window.hpp"
 
 int main(int, char*[])
 {
@@ -16,18 +16,13 @@ int main(int, char*[])
     }
 
     constexpr uint64_t SDL_WINDOW_FLAGS = SDL_WINDOW_VULKAN; // for now only flag we want is Vulkan rendering
-    const Window window{Constants::WINDOW_TITLE.data(),
-                        SDL_WINDOWPOS_CENTERED,
-                        SDL_WINDOWPOS_CENTERED,
-                        1280,
-                        720,
-                        SDL_WINDOW_FLAGS};
+    const Window window(SDL_WINDOW_FLAGS);
     if (!window.m_sdl)
     {
         return Error::CreatingSdlWindow;
     }
 
-    const Renderer renderer{window};
+    const Renderer renderer(window);
     if (!renderer.m_sdl)
     {
         return Error::CreatingSdlRenderer;

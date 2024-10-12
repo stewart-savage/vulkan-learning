@@ -2,15 +2,7 @@
 // Created by stewa on 06/06/2024.
 //
 #pragma once
-#include <string>
 #include "color.hpp"
-
-namespace Constants
-{
-    constexpr std::string_view WINDOW_TITLE("Window title!\0");
-    constexpr int WINDOW_MIN_WIDTH = 800;
-    constexpr int WINDOW_MIN_HEIGHT = 600;
-} // namespace Constants
 
 namespace Colors
 {
