@@ -1,5 +1,6 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h> // This turns the main function in this file into a macro which SDL replaces with WinMain in Windows
+#include <glm/glm.hpp>
 #include <iostream>
 #include "constants.hpp"
 #include "errors.hpp"
