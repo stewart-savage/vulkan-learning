@@ -7,8 +7,10 @@ find_package(SDL3 CONFIG REQUIRED) # by default SDL3 is happy to install in the 
 find_package(Vulkan REQUIRED) # by default the LunarG Vulkan SDK installer installs Vulkan lib/inc at C:/VulkanSDK on Windows
 
 set(SRC main.cpp
+        app.cpp
         input.cpp
         renderer.cpp
+        validation.cpp
         window.cpp
 )
 list(TRANSFORM SRC PREPEND "src/") #Handy way to not need to prefix all src files with the src/ directory
