@@ -14,8 +14,7 @@ namespace Validation
     constexpr bool enableValidationLayers = true;
 #endif
 
-
-    std::expected<uint32_t, std::string> checkValidationLayerSupport()
+    std::expected<bool, std::string> checkValidationLayerSupport()
     {
         if constexpr (!enableValidationLayers)
             return 0;
@@ -43,6 +42,6 @@ namespace Validation
                                                    layerName));
             }
         }
-        return {layerCount};
+        return true;
     }
-}
+} // namespace Validation

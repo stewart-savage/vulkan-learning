@@ -1,13 +1,11 @@
 #pragma once
 
+#include <array>
 #include <expected>
 #include <string>
-#include <vector>
 
 namespace Validation
 {
-    const std::vector validationLayers = {
-        "VK_LAYER_KHRONOS_validation"
-};
-    std::expected<uint32_t, std::string> checkValidationLayerSupport();
+    constexpr std::array<const char*, 1> validationLayers = {"VK_LAYER_KHRONOS_validation"};
+    std::expected<bool, std::string> checkValidationLayerSupport();
 }

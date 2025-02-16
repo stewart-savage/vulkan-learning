@@ -1,4 +1,6 @@
 #include "app.hpp"
+#include "constants.hpp"
+#include "renderer.hpp"
 #include "input.hpp"
 #include "validation.hpp"
 #include "window.hpp"
@@ -24,14 +26,14 @@ namespace App
             appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
             appInfo.pEngineName = "No Engine";
             appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-            appInfo.apiVersion = VK_API_VERSION_1_0;
+            appInfo.apiVersion = VK_API_VERSION_1_1;
 
             VkInstanceCreateInfo createInfo{};
             createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
             createInfo.pApplicationInfo = &appInfo;
-            if (const uint32_t layerCount = validationLayers.value(); layerCount > 0)
+            if (validationLayers.value())
             {
-                createInfo.enabledLayerCount = layerCount;
+                createInfo.enabledLayerCount = Validation::validationLayers.size();
                 createInfo.ppEnabledLayerNames = Validation::validationLayers.data();
             } else
             {
@@ -48,7 +50,7 @@ namespace App
             {
                 extensionNames.emplace_back(extension.extensionName);
             }
-            if (const bool appleHardware = false; appleHardware == true) //TODO: add check for MacOS to flip this bool
+            if constexpr (const bool appleHardware = false; appleHardware == true) //TODO: add check for MacOS to flip this bool
             {
                 extensionNames.emplace_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
                 extensionCount++;
@@ -70,10 +72,12 @@ namespace App
             return createInstance();
         }
 
-        void mainLoop()
+        void mainLoop(Window& window)
         {
             while (Input::Event::trigger() != SDL_EVENT_QUIT)
             {
+                // Renderer r {window};
+                // r.renderRectangle(Color{ 86, 8,24, },Transparency::HALF);
                 // ?
             }
         }
@@ -93,7 +97,7 @@ namespace App
         auto vkInstance = initVulkan();
         if (!vkInstance.has_value())
             return std::unexpected(vkInstance.error());
-        mainLoop();
+        mainLoop(window);
         cleanup(vkInstance.value());
         return {};
     }

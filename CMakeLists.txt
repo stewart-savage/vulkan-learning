@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 project(sdl_practice)
 set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_COMPILE_WARNING_AS_ERROR)
 
 #(on Windows, ensure CMAKE_PREFIX_PATH is added to path containing a directory with SDL lib/inc files)
 find_package(SDL3 CONFIG REQUIRED) # by default SDL3 is happy to install in the CMAKE_PREFIX_PATH dir
