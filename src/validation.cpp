@@ -8,11 +8,7 @@
 
 namespace Validation
 {
-#ifdef NDEBUG
-    constexpr bool enableValidationLayers = false;
-#else
-    constexpr bool enableValidationLayers = true;
-#endif
+
 
     std::expected<bool, std::string> checkValidationLayerSupport()
     {

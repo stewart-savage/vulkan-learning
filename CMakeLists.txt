@@ -3,26 +3,39 @@ project(sdl_practice)
 set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_COMPILE_WARNING_AS_ERROR)
 
-#(on Windows, ensure CMAKE_PREFIX_PATH is added to path containing a directory with SDL lib/inc files)
+#on Windows, ensure CMAKE_PREFIX_PATH is added to path containing a directory with SDL lib/inc files.
+#on Linux, the libraries usually just get to be installed to /usr/lib and /usr/include via distro package managers.
 find_package(SDL3 CONFIG REQUIRED) # by default SDL3 is happy to install in the CMAKE_PREFIX_PATH dir
 find_package(Vulkan REQUIRED) # by default the LunarG Vulkan SDK installer installs Vulkan lib/inc at C:/VulkanSDK on Windows
 
-set(SRC main.cpp
+set(SOURCES_DIR src/)
+set(SOURCES main.cpp
         app.cpp
         input.cpp
         renderer.cpp
         validation.cpp
         window.cpp
 )
-list(TRANSFORM SRC PREPEND "src/") #Handy way to not need to prefix all src files with the src/ directory
+list(TRANSFORM SOURCES PREPEND ${SOURCES_DIR})
 
-#Headers
-set(INCLUDE ${PROJECT_SOURCE_DIR}/include)
+set(HEADER_DIR include/)
+set(HEADERS app.hpp
+        color.hpp
+        constants.hpp
+        errors.hpp
+        input.hpp
+        renderer.hpp
+        validation.hpp
+        window.hpp
+)
+list(TRANSFORM HEADERS PREPEND ${HEADER_DIR})
 
-#Generate executable, include headers and link libs
-add_executable(sdl_practice ${SRC})
-target_include_directories(sdl_practice PRIVATE ${INCLUDE} Vulkan::Headers)
-target_link_libraries(sdl_practice PRIVATE SDL3::SDL3 Vulkan::Vulkan)
+add_executable(sdl_practice ${SOURCES} ${HEADERS})
+
+target_include_directories(sdl_practice PRIVATE Vulkan::Headers ${HEADER_DIR})
+# add subdirectories
+add_subdirectory(utils)
+target_link_libraries(sdl_practice PRIVATE SDL3::SDL3 Vulkan::Vulkan utils)
 
 #Copy SDL3.dll from CMAKE_PREFIX_PATH environment variable directory to the post-build directory
 if (WIN32)

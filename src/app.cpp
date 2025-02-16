@@ -1,10 +1,11 @@
 #include "app.hpp"
 #include "constants.hpp"
-#include "renderer.hpp"
 #include "input.hpp"
+#include "renderer.hpp"
 #include "validation.hpp"
 #include "window.hpp"
 
+#include <SDL3/SDL_vulkan.h>
 #include <vector>
 #include <vulkan/vulkan_core.h>
 
@@ -12,6 +13,20 @@ namespace App
 {
     namespace // anonymous namespace here allows encapsulated initialization without using class/singleton
     {
+        std::vector<const char*> getRequiredExtensions()
+        {
+            uint32_t sdlExtensionCount = 0;
+            char const* const* sdlExtensions = SDL_Vulkan_GetInstanceExtensions(&sdlExtensionCount);
+
+            std::vector<const char*> extensions(sdlExtensions, sdlExtensions + sdlExtensionCount);
+
+            if (Validation::enableValidationLayers) {
+                extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+            }
+
+            return extensions;
+        }
+
         std::expected<VkInstance, std::string> createInstance()
         {
             auto validationLayers = Validation::checkValidationLayerSupport();
@@ -40,24 +55,15 @@ namespace App
                 createInfo.enabledLayerCount = 0;
             }
 
-            uint32_t extensionCount;
-            vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-            std::vector<VkExtensionProperties> extensions(extensionCount);
-            vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
-            std::vector<const char*> extensionNames;
-            extensionNames.reserve(extensionCount);
-            for (const VkExtensionProperties& extension: extensions)
+            std::vector extensions{ getRequiredExtensions() };
+
+            if constexpr (constexpr bool appleHardware = false; appleHardware == true) //TODO: add check for MacOS to flip this bool
             {
-                extensionNames.emplace_back(extension.extensionName);
-            }
-            if constexpr (const bool appleHardware = false; appleHardware == true) //TODO: add check for MacOS to flip this bool
-            {
-                extensionNames.emplace_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
-                extensionCount++;
+                extensions.emplace_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
                 createInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
             }
-            createInfo.enabledExtensionCount = extensionCount;
-            createInfo.ppEnabledExtensionNames = extensionNames.data();
+            createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+            createInfo.ppEnabledExtensionNames = extensions.data();
 
             if (VkInstance instance; vkCreateInstance(&createInfo, nullptr, &instance) == VK_SUCCESS)
             {
@@ -66,11 +72,30 @@ namespace App
             return std::unexpected{"Failed to create Vulkan instance"};
         }
 
+        void setupDebugMessenger()
+        {
+            if constexpr (!Validation::enableValidationLayers) return;
+
+            VkDebugUtilsMessengerCreateInfoEXT createInfo{};
+            createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+            createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+            createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+            //createInfo.pfnUserCallback = debugCallback;
+            createInfo.pUserData = nullptr; // Optional
+        }
+
         // More complex init logic than just creating the instance will go here eventually
         std::expected<VkInstance, std::string> initVulkan()
         {
+            auto result = createInstance();
+            if (result)
+            {
+                setupDebugMessenger();
+            }
             return createInstance();
         }
+
+        VkDebugUtilsMessengerEXT debugMessenger;
 
         void mainLoop(Window& window)
         {
