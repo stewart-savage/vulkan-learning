@@ -6,14 +6,14 @@
 bool Window::resize(const int width, const int height)
 {
     const bool isValidResizeResolution =
-            _width >= WINDOW_DEFAULT_WIDTH &&
-            _height >= WINDOW_DEFAULT_HEIGHT &&
-            16 * _height == 9 * _width;
+            m_width >= WINDOW_DEFAULT_WIDTH &&
+            m_height >= WINDOW_DEFAULT_HEIGHT &&
+            16 * m_height == 9 * m_width;
 
     if (isValidResizeResolution && SDL_SetWindowSize(m_sdl.get(), width, height))
     {
-        _width = width;
-        _height = height;
+        m_width = width;
+        m_height = height;
         return true;
     }
     return false;
